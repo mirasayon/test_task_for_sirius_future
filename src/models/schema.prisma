@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters", "typedSql"]
+} 
+datasource db {
+  provider      =        "postgresql" 
+  url           =        env("DB_CONNECTION_URI")
+}
+model Student {
+  id                                  String  @id @default(cuid()) 
+  created_at                          DateTime                @default(now())        @db.Timestamptz()
+  update_at                           DateTime                @updatedAt             @db.Timestamptz()
+  first_name                          String     
+  last_name                           String     
+  surname                             String    
+  email                               String                  @unique  
+  phone_number                        String                  @unique  
+  invitationsSent                     Invitation[]            @relation("InvitationsSent")
+  payments                            Payment[]
+  invited_by                          Student?                @relation("InvitationsReceived", fields: [invited_by_id], references: [id])
+  invited_students                    Student[]               @relation("InvitationsReceived")
+  invited_by_id                       String?
+  lessons                             Lessons[]
+  
+}
+model Invitation  {
+  id                                  String                      @id @default(cuid()) 
+  invitation_link_id                  String                      @unique
+  inviter                             Student                     @relation("InvitationsSent",fields: [inviter_id], references: [id])
+  inviter_id                          String         
+  created_at                          DateTime                    @default(now())         @db.Timestamptz()
+} 
+model Payment {
+  id                                  String                      @id @default(cuid()) 
+  amount                              Int       
+  payer_id                            String       
+  payer                               Student                     @relation(fields: [payer_id], references: [id])
+  created_at                          DateTime                    @default(now())            @db.Timestamptz()
+
+}
+
+
+model Lessons {
+  id                                  String                      @id @default(cuid()) 
+  created_at                          DateTime                     @default(now())        @db.Timestamptz()
+  amount                              Int?                        @default(120000)
+  student                             Student                       @relation(fields: [student_id], references: [id])
+  student_id                          String
+  about                               String?
+} 

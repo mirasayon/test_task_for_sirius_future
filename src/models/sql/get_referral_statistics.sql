@@ -1,0 +1,1 @@
+ SELECT * FROM "Student" WHERE "invited_by_id" IS NOT NULL;

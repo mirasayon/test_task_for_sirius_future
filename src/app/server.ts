@@ -1,0 +1,21 @@
+import Express from "express";
+import MorganLogger from "morgan";
+import { devLogger } from "../middlewares/logger.js";
+import { UnknownErrors } from "../middlewares/errors.js";
+import Cors from "cors";
+import Compression from "compression";
+import Helmet from "helmet";
+import { AppRouter } from "../routes/router.js";
+import { is_dev } from "../configs/server.js";
+export const App = Express();
+
+App.use(MorganLogger("tiny"));
+App.use(Compression());
+App.use(Cors());
+App.use(Helmet());
+App.use(Express.json());
+App.use(Express.urlencoded({ extended: false }));
+is_dev && App.use(devLogger.headers);
+is_dev && App.use(devLogger.body);
+App.use(AppRouter);
+App.use(UnknownErrors.handler);
