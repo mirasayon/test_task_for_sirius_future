@@ -8,13 +8,13 @@ ____
 
 ## Инструкция
 
-1. Настройте файла `.env`
+1. Настройте файл `.env`
 
 Введите вашу url подключения к БД на PostgreSQL в файл `.env`
 
 ```env
     # .env
-    DB_CONNECTION_URI="postgresql://username:12345@localhost:5432/database"
+    DB_CONNECTION_URI="postgresql://username:12345@localhost:5432/dbname"
 ```
 
 * Чтобы установить зависимости, подготовить БД к работе, собрать и запустить проект введите в командную строку:
